@@ -13,8 +13,25 @@
 // limitations under the License.
 
 // Package fakefs is an in-memory net/http FileSystem for mock
-// testing.  For example, plug in a fake filesystem for file URIs
-// using NewFileTransport:
+// testing.
+//
+// Status: DEPRECATED
+//
+// I'll keep this repository around because it's pretty tiny, but you
+// can accomplish its goals using mapfs and httpfs:
+//
+// * https://godoc.org/golang.org/x/tools/godoc/vfs/httpfs
+// * https://godoc.org/golang.org/x/tools/godoc/vfs/mapfs
+//
+// For example:
+//
+//   fakeFS := httpfs.New(mapfs.New(map[string]string{
+//     "etc/passwd": "root:x:0:0:root:/root:/bin/bash\n"
+//   }
+//   transport := &http.Transport{}
+//   transport.RegisterProtocol("file", http.NewFileTransport(fakeFS))
+//
+// And here's the fakefs version:
 //
 //   fakeFS := &fakefs.FileSystem{
 //     Files: map[string]*fakefs.Opener{
@@ -22,7 +39,7 @@
 //         FileInfo: fakefs.FileInfo{
 //           FileMode: 0x644,
 //         },
-//         Content: ""
+//         Content: "root:x:0:0:root:/root:/bin/bash\n"
 //       },
 //     },
 //   }
